@@ -1,0 +1,23 @@
+<app-page-breadcrumb pageTitle="Topic" />
+<div class="space-y-6">
+  <div>
+    <app-component-card title="Topic's List">
+      @if (loading) {
+        <div>Loading topics...</div>
+      }
+      
+      @if (error) {
+        <div>{{ error }}</div>
+      }
+      
+      @if (!loading && !error) {
+        <app-topics-table 
+          [users]="users"
+          (editClick)="openEdit($event)"
+          (detailsClick)="openTopicDetails($event)"
+        ></app-topics-table>
+      }
+      <!-- <app-topics-table/> -->
+    </app-component-card>
+  </div>
+</div>
