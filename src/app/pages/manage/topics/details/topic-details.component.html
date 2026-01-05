@@ -1,8 +1,8 @@
-<app-page-breadcrumb pageTitle="Topic" />
+<app-page-breadcrumb pageTitle="Topic Details" />
 <div class="space-y-6">
   <div>
-    <app-component-card title="Topic's List">
-      @if (loading) {
+    <app-component-card title="User Lists">
+      <!-- @if (loading) {
         <div>Loading topics...</div>
       }
       
@@ -11,13 +11,33 @@
       }
       
       @if (!loading && !error) {
-        <app-topics-table 
-          [users]="users"
-          (editClick)="openEdit($event)"
-          (detailsClick)="openTopicDetails($event)"
-        ></app-topics-table>
+        <app-topic-details-table 
+        [users]="users"
+        (editClick)="openEdit($event)"
+        (detailsClick)="openTopicDetails($event)"
+        ></app-topic-details-table>
+      } -->
+      <app-topic-users-table/>
+    </app-component-card>
+  </div>
+  <div>
+    <app-component-card title="Notification Lists">
+      <!-- @if (loading) {
+        <div>Loading topics...</div>
       }
-      <!-- <app-topics-table/> -->
+      
+      @if (error) {
+        <div>{{ error }}</div>
+      }
+      
+      @if (!loading && !error) {
+        <app-topic-details-table 
+        [users]="users"
+        (editClick)="openEdit($event)"
+        (detailsClick)="openTopicDetails($event)"
+        ></app-topic-details-table>
+      } -->
+      <app-topic-notifications-table/>
     </app-component-card>
   </div>
 </div>

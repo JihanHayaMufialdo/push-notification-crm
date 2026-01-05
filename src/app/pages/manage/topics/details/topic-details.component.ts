@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ComponentCardComponent } from '../../../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-import { TopicsTableComponent } from '../../../../shared/components/tables/topics-table/topics-table.component';
+import { TopicNotificationsTableComponent } from '../../../../shared/components/tables/topic-details-table/topic-notifications-table/topic-notifications-table.component';
+import { TopicUsersTableComponent } from '../../../../shared/components/tables/topic-details-table/topic-users-table/topic-users-table.component';
 import { TopicService, TopicUser, TopicNotification } from '../../../../services/topics.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { TopicService, TopicUser, TopicNotification } from '../../../../services
   imports: [
     ComponentCardComponent,
     PageBreadcrumbComponent,
-    TopicsTableComponent
+    TopicUsersTableComponent,
+    TopicNotificationsTableComponent
   ],
   templateUrl: './topic-details.component.html',
 })
