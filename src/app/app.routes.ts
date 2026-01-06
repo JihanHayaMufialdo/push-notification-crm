@@ -19,10 +19,12 @@ import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
 import { CalenderComponent } from './pages/calender/calender.component';
 import { TopicsComponent } from './pages/manage/topics/topics.component';
-import { TopicDetailsComponent } from './pages/manage/topics/details/topic-details.component';
+import { TopicDetailsComponent } from './pages/manage/topics/topic-details/topic-details.component';
 import { UsersComponent } from './pages/manage/users/users.component';
 import { AuthGuard } from './guards/auth.guard';
 import { BasicTableComponent } from './pages/tables/basic-tables/basic-tables.component';
+import { EditTopicComponent } from './pages/manage/topics/edit-topic/edit-topic.component';
+import { TopicSubscribeComponent } from './pages/manage/topics/topic-details/topic-subscribe/topic-subscribe.component';
  
 export const routes: Routes = [
   {
@@ -38,19 +40,19 @@ export const routes: Routes = [
           'Angular Ecommerce Dashboard | TailAdmin - Angular Admin Dashboard Template',
       },
       {
-        path:'list-notifications',
+        path:'notifications',
         component:NotificationsComponent,
         canActivate: [AuthGuard],
         title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
-        path:'list-topics',
+        path:'topics',
         component:TopicsComponent,
         canActivate: [AuthGuard],
         title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
-        path:'list-users',
+        path:'users',
         component:UsersComponent,
         canActivate: [AuthGuard],
         title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
@@ -58,6 +60,18 @@ export const routes: Routes = [
       {
         path:'topic/:id/details',
         component:TopicDetailsComponent,
+        canActivate: [AuthGuard],
+        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path:'topic/:id/edit',
+        component:EditTopicComponent,
+        canActivate: [AuthGuard],
+        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path:'topic/:id/subscribe',
+        component:TopicSubscribeComponent,
         canActivate: [AuthGuard],
         title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },

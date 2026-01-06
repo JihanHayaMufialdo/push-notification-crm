@@ -1,6 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+
+export interface BreadcrumbItem {
+  label: string;
+  url?: string;
+}
+
 @Component({
   selector: 'app-page-breadcrumb',
   imports: [
@@ -10,5 +16,6 @@ import { RouterModule } from '@angular/router';
   styles: ``
 })
 export class PageBreadcrumbComponent {
-  @Input() pageTitle = '';
+  // @Input() pageTitle = '';
+  @Input() breadcrumbs: BreadcrumbItem[] = [];
 }

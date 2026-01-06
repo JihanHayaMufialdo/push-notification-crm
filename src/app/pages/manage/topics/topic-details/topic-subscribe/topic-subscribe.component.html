@@ -1,0 +1,22 @@
+<app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="space-y-6">
+  <div>
+    <app-component-card title="Form Edit Topic">
+      @if (loading) {
+        <div>Loading forms...</div>
+      }
+      
+      @if (error) {
+        <div>{{ error }}</div>
+      }
+      
+      <!-- @if (!loading && topic) {
+        <app-edit-topic-form
+          [name]="topic.name"
+          [description]="topic.description"
+          (submitForm)="saveTopic($event)"
+        />
+      } -->
+    </app-component-card>
+  </div>
+</div>

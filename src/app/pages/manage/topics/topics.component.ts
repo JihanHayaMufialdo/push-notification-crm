@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComponentCardComponent } from '../../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { TopicsTableComponent } from '../../../shared/components/tables/topics-table/topics-table.component';
-import { Topic, TopicService } from '../../../services/topics.service';
+import { Topic, TopicService, TopicUser } from '../../../services/topics.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,10 +15,19 @@ import { Router } from '@angular/router';
   templateUrl: './topics.component.html',
   styles: ``
 })
+
 export class TopicsComponent implements OnInit{
+  
   topics: Topic[] = [];
+  users: TopicUser[] = [];
+
   loading = true;
   error = '';
+
+  breadcrumbs = [
+    { label: 'Dashboard', url: '/' },
+    { label: 'Topic' }
+  ];
 
   constructor(
     private topicService: TopicService,
@@ -32,7 +41,12 @@ export class TopicsComponent implements OnInit{
   fetchTopics() {
     this.topicService.getTopics().subscribe({
       next: (res) => {
-        this.topics = res.topics;
+        this.topics = res.topics.map(topic => ({
+          ...topic,
+          userCount: topic.DeviceTopics
+            ?.filter(dt => dt.Device?.User != null)
+            .length ?? 0
+        }));
         this.loading = false;
       },
       error: () => {
@@ -40,44 +54,14 @@ export class TopicsComponent implements OnInit{
         this.loading = false;
       }
     });
-  }
-
+  }  
+  
   openTopicDetails(topic: Topic) {
     this.router.navigate(['/topic', topic.id, 'details']);
   }  
-
-  // openUsers(topic: Topic) {
-  //   this.router.navigate(['/topic', topic.id, 'users']);
-  //   // topic.expanded = true;
-  //   // this.loadUsers(topic);
-  // }
 
   openEdit(topic: Topic) {
     this.router.navigate(['/topic', topic.id, 'edit']);
   }
   
-  // openNotifications(topic: Topic) {
-  //   this.router.navigate(['/topic', topic.id, 'notifications']);
-  // }
-
-  // loadUsers(topic: Topic) {
-  //   topic.loadingUsers = true;
-  
-  //   this.topicService.getUsersByTopic(topic.id).subscribe(res => {
-  //     topic.users = res.users;
-  //     topic.loadingUsers = false;
-  //   });
-  // }
-  
-  // subscribe(topic: Topic, nip: string) {
-  //   this.topicService.subscribeUser(topic.id, nip).subscribe(() => {
-  //     this.loadUsers(topic);
-  //   });
-  // }
-  
-  // unsubscribe(topic: Topic, nip: string) {
-  //   this.topicService.unsubscribeUser(topic.id, nip).subscribe(() => {
-  //     this.loadUsers(topic);
-  //   });
-  // }
 }

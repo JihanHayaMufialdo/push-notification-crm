@@ -1,0 +1,39 @@
+<app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="space-y-6">
+  <div>
+    <app-component-card title="User Lists">
+      @if (loadingUsers) {
+        <div>Loading users...</div>
+      }
+      
+      @if (errorUsers) {
+        <div>{{ errorUsers }}</div>
+      }
+      
+      @if (!loadingUsers && !errorUsers) {
+        <app-topic-users-table
+          [users]="users"
+          [topic]="topic"
+          (manageClick)="openUsersTopicForm($event)"
+        ></app-topic-users-table>
+      }
+    </app-component-card>
+  </div>
+  <div>
+    <app-component-card title="Notification Lists">
+      @if (loadingNotifications) {
+        <div>Loading notifications...</div>
+      }
+      
+      @if (errorNotifications) {
+        <div>{{ errorNotifications }}</div>
+      }
+      
+      @if (!loadingNotifications && !errorNotifications) {
+        <app-topic-notifications-table 
+          [notifications]="notifications"
+        ></app-topic-notifications-table>
+      }
+    </app-component-card>
+  </div>
+</div>

@@ -1,14 +1,23 @@
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HttpClient } from '@angular/common/http';;
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
+
+export interface User {
+    nip: string;
+    name: string;
+    department: string;
+}
+  
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private api = environment.apiUrl;
+    private api = environment.apiUrl; 
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get(`${this.api}/users`);
-  }
+    getUsers(): Observable<{ users: User[] }> {
+        return this.http.get<{ users: User[] }>(`${this.api}/admin/users`);
+    }
 }

@@ -2,39 +2,45 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 
 export interface Topic {
     id: number;
     name: string;
     description: string;
     updatedAt: string;
-    users?: TopicUser[];
-    notifications?: TopicNotification[];
+    userCount?: number;
+
     loadingUsers?: boolean;
     loadingNotifications?: boolean;
     expanded?: boolean;
+
+    DeviceTopics?: {
+      id: number;
+      Device?: {
+        id: number;
+        platform?: string;
+        User?: {
+          nip: string;
+          name?: string;
+        };
+      };
+    }[];
 }
 
 export interface TopicUser {
-    // name: string;
-    users: {
-      nip: string;
-      name: string;
-      platform: string;
-    }[];
+    nip: string;
+    name: string;
+    department: string;
+    platform: string;
 }
 
 export interface TopicNotification {
-    // name: string;
-    notifications: {
-      title: string;
-      body: string;
-      platform: string;
-      sendBy: string;
-      link: string;
-      status: string;
-      createdAt: string;
-    }[];
+    title: string;
+    body: string;
+    sendBy: string;
+    status: string;
+    createdAt: string;
 }
   
 
@@ -48,19 +54,74 @@ export class TopicService {
         return this.http.get<{ topics: Topic[] }>(`${this.api}/admin/topics`);
     }
 
-    getUsersByTopic(id: number):  Observable<{ users: TopicUser[] }>{
-        return this.http.get<{ users: TopicUser[] }>(`${this.api}/admin/topics/${id}/users`);
+    getUsersByTopic(id: number): Observable<TopicUser[]> {
+        return this.http
+          .get<{ users: any[] }>(
+            `${this.api}/admin/topic/${id}/users`
+          )
+          .pipe(
+            map(response =>
+              response.users.map(user => {
+                const device = user.Device;
+                const deviceUser = device?.User;
+      
+                return {
+                  nip: deviceUser?.nip ?? '—',
+                  name: deviceUser?.name ?? '-',
+                  department: deviceUser?.department ?? '-',
+                  platform: device?.platform ?? '-'
+                };
+              })
+            )
+        );
+    }
+      
+
+    getNotificationsByTopic(id: number): Observable<TopicNotification[]>{
+        return this.http
+          .get<{ notifications: any[] }>(
+            `${this.api}/admin/topic/${id}/notifications`
+          )
+          .pipe(
+            map(response =>
+              response.notifications.map(notif => {
+      
+                return {
+                  title: notif?.title ?? '—',
+                  body: notif?.body ?? '-',
+                  sendBy: notif?.sendBy ?? '-',
+                  createdAt: notif?.createdAt ?? '-',
+                  status: notif?.status ?? '-'
+                };
+              })
+            )
+        );
     }
 
-    getNotificationsByTopic(id: number): Observable<{ notifications: TopicNotification[] }>{
-        return this.http.get<{ notifications: TopicNotification[] }>(`${this.api}/admin/topics/${id}/notifications`);
+    getTopicById(id: number) {
+      return this.http.get<{ topic: Topic }>(
+        `${this.api}/admin/topic/${id}`
+      );
     }
 
-    subscribeUser(id: number, nip: string): Observable<any> {
-        return this.http.post(`${this.api}/admin/topics/${id}/assign`, { nips: [nip] });
+    updateTopic(
+      id: number,
+      payload: { name: string; description: string }
+    ) {
+      return this.http.put<{
+        message: string;
+        topics: Topic[];
+      }>(
+        `${this.api}/admin/topic/${id}/edit`,
+        payload
+      );
     }
 
-    unsubscribeUser(id: number, nip: string): Observable<any> {
-    return this.http.post(`${this.api}/admin/topics/${id}/unassign`, { nips: [nip] });
+    subscribeUsers(id: number, nips: string[]): Observable<any> {
+        return this.http.post(`${this.api}/admin/topic/${id}/assign`, { nips });
+    }
+
+    unsubscribeUsers(id: number, nips: string[]): Observable<any> {
+    return this.http.post(`${this.api}/admin/topic/${id}/unassign`, { nips });
     }
 }
