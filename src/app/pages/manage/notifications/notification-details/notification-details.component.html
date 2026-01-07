@@ -1,0 +1,21 @@
+<app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="space-y-6">
+  <div>
+    <app-component-card title="User Lists">
+      @if (loading) {
+        <div>Loading users...</div>
+      }
+      
+      @if (error) {
+        <div>{{ error }}</div>
+      }
+      
+      @if (!loading && !error) {
+        <app-notification-details-table
+          [users]="users"
+          [notification]="notification"
+        ></app-notification-details-table>
+      }
+    </app-component-card>
+  </div>
+</div>

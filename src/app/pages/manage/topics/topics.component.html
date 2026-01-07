@@ -13,6 +13,7 @@
       @if (!loading && !error) {
         <app-topics-table 
           [topics]="topics"
+          (createClick)="openTopicForm()"
           (editClick)="openEdit($event)"
           (detailsClick)="openTopicDetails($event)"
         ></app-topics-table>

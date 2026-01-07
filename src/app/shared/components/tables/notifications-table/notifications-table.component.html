@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2 px-5 mb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
     <div>
       <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-        Latest Topics
+        Notification Logs
       </h3>
     </div>
     <div class="relative inline-block">
@@ -20,10 +20,16 @@
         </div>
         <div dropdown-content>
           <button
-            (click)="createClick.emit()"
+            (click)="sendToUsers.emit()"
             class="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 p-2"
           >
-            Create New Topic
+            Send Users
+          </button>
+          <button
+            (click)="sendToTopic.emit()"
+            class="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 p-2"
+          >
+            Send Topic
           </button>
         </div>
       </app-table-dropdown>
@@ -35,35 +41,56 @@
       <table class="min-w-full">
         <thead class="border-gray-100 border-y dark:border-white/[0.05]">
           <tr>
-            <th class="py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Name</th>
-            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Description</th>
-            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Last Update</th>
+            <th class="py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Created At</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Title</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Body</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Link</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Send By</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Topic</th>
             <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Users</th>
+            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Status </th>
             <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
               <span class="sr-only">Action</span>
             </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-white/[0.05]">
-          @for (topic of topics; track $index) {
+          @for (notif of notifications; track $index) {
           <tr>
             <td class="px-4 py-4">
               <div class="flex items-center gap-3">
                 <div>
                   <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                    {{ topic.name }}
+                    {{ formatDate(notif.createdAt) }}
                   </span>
                 </div>
               </div>
             </td>
             <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-theme-sm dark:text-gray-400">
-              {{ topic.description }}
+              {{ notif.title }}
             </td>
             <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              {{ formatDate(topic.updatedAt) }}
+              {{ notif.body }}
             </td>
             <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              {{ topic.userCount }}
+              {{ notif.link }}
+            </td>
+            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
+              {{ notif.sendBy }}
+            </td>
+            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
+              {{ notif.topic || '-'}}
+            </td>
+            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
+              {{ notif.userCount }}
+            </td>
+            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
+              <app-badge
+                size="sm"
+                [color]="getBadgeColor(notif.status)"
+              >
+                {{ notif.status }}
+              </app-badge>
             </td>
             <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
               <div class="relative inline-block">
@@ -90,13 +117,7 @@
                   <div dropdown-content>
                     <button
                       class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                      (click)="editClick.emit(topic)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                      (click)="detailsClick.emit(topic)"
+                      (click)="detailsClick.emit(notif)"
                     >
                       Details
                     </button>

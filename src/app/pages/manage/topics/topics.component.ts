@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   styles: ``
 })
 
-export class TopicsComponent implements OnInit{
+export class TopicsComponent implements OnInit { 
   
   topics: Topic[] = [];
   users: TopicUser[] = [];
@@ -29,16 +29,14 @@ export class TopicsComponent implements OnInit{
     { label: 'Topic' }
   ];
 
-  constructor(
-    private topicService: TopicService,
-    private router: Router
-  ) {}
+  constructor(private topicService: TopicService, private router: Router) {}
 
   ngOnInit(): void {
-    this.fetchTopics();
+    this.loadTopics();
   }
 
-  fetchTopics() {
+  loadTopics() {
+    this.loading = true;
     this.topicService.getTopics().subscribe({
       next: (res) => {
         this.topics = res.topics.map(topic => ({
@@ -62,6 +60,10 @@ export class TopicsComponent implements OnInit{
 
   openEdit(topic: Topic) {
     this.router.navigate(['/topic', topic.id, 'edit']);
+  }
+
+  openTopicForm() {
+    this.router.navigate(['/topic/create']);
   }
   
 }

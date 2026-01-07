@@ -1,0 +1,21 @@
+<div class="space-y-6 mb-4">
+  <div>
+    <app-multi-select
+    label="Select Users"
+    [options]="multiOptions"
+    (selectionChange)="handleUsersChange($event)"
+  ></app-multi-select>
+  </div>
+  <div>
+    <app-label for="input">Title</app-label>
+    <app-input-field type="text" id="input"[(ngModel)]="title" (ngModelChange)="titleChange.emit($event)" required/>
+  </div>
+  <div>
+    <app-label for="input">Body</app-label>
+    <app-input-field type="text" id="input" [(ngModel)]="body" (ngModelChange)="bodyChange.emit($event)" required/>
+  </div>
+  <div>
+    <app-label for="input">Link</app-label>
+    <app-input-field type="text" id="input" [(ngModel)]="link" (ngModelChange)="linkChange.emit($event)" required/>
+  </div>
+</div>

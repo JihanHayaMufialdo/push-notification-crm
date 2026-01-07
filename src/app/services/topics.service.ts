@@ -42,6 +42,11 @@ export interface TopicNotification {
     status: string;
     createdAt: string;
 }
+
+interface TopicPayload {
+  name: string;
+  description: string;
+}
   
 
 @Injectable({ providedIn: 'root' })
@@ -52,6 +57,10 @@ export class TopicService {
 
     getTopics(): Observable<{ topics: Topic[] }> {
         return this.http.get<{ topics: Topic[] }>(`${this.api}/admin/topics`);
+    }
+
+    createTopic(payload: TopicPayload): Observable<any> {
+      return this.http.post(`${this.api}/admin/create-topic`, payload);
     }
 
     getUsersByTopic(id: number): Observable<TopicUser[]> {
@@ -73,9 +82,8 @@ export class TopicService {
                 };
               })
             )
-        );
+          );
     }
-      
 
     getNotificationsByTopic(id: number): Observable<TopicNotification[]>{
         return this.http
@@ -99,9 +107,7 @@ export class TopicService {
     }
 
     getTopicById(id: number) {
-      return this.http.get<{ topic: Topic }>(
-        `${this.api}/admin/topic/${id}`
-      );
+      return this.http.get<{ topic: Topic }>(`${this.api}/admin/topic/${id}`);
     }
 
     updateTopic(
@@ -122,6 +128,6 @@ export class TopicService {
     }
 
     unsubscribeUsers(id: number, nips: string[]): Observable<any> {
-    return this.http.post(`${this.api}/admin/topic/${id}/unassign`, { nips });
+    return this.http.delete(`${this.api}/admin/topic/${id}/unassign`, { body: { nips }});
     }
 }

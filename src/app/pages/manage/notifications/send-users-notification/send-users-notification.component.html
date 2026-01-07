@@ -1,0 +1,40 @@
+<app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="space-y-6">
+  <div>
+    <app-component-card title="Form Send Notification To Users">
+      @if (loading) {
+        <div>Loading forms...</div>
+      }
+      
+      @if (error) {
+        <div>{{ error }}</div>
+      }
+      
+      @if (!loading) {
+        <!-- <app-send-users-notification-form/> -->
+        <app-send-users-notification-form
+        [users]="users"
+        (usersChange)="selectedUsers = $event"
+        (titleChange)="title = $event"
+        (bodyChange)="body = $event"
+        (linkChange)="link = $event"
+      ></app-send-users-notification-form>
+
+        <div class="flex items-center gap-5">
+          <app-button size="sm" variant="primary" 
+          [disabled]="loading"
+          (click)="saveNotification()"> 
+            Send 
+          </app-button>
+          <app-button
+            size="sm"
+            variant="outline"
+            (click)="cancel()"
+          >
+            Cancel
+          </app-button>
+        </div>
+      }
+    </app-component-card>
+  </div>
+</div>

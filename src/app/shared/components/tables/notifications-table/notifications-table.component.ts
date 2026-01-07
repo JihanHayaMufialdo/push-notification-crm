@@ -2,26 +2,28 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
-import { Topic } from '../../../../services/topics.service';
+import { BadgeComponent } from '../../ui/badge/badge.component';
+import { Notification } from '../../../../services/notifications.service';
 
 @Component({
-  selector: 'app-topics-table',
+  selector: 'app-notifications-table',
   imports: [
     CommonModule,
     ButtonComponent,
     TableDropdownComponent,
+    BadgeComponent,
   ],
-  templateUrl: './topics-table.component.html',
+  templateUrl: './notifications-table.component.html',
   styles: ``
 })
-export class TopicsTableComponent {
 
-  @Input() topics: Topic[] = [];
+export class NotificationsTableComponent {
 
-  @Output() editClick = new EventEmitter<Topic>();
-  @Output() detailsClick = new EventEmitter<Topic>(); 
-  @Output() createClick = new EventEmitter<Topic>(); 
+  @Input() notifications: Notification[] = [];
 
+  @Output() detailsClick = new EventEmitter<Notification>();
+  @Output() sendToUsers = new EventEmitter<void>();
+  @Output() sendToTopic = new EventEmitter<void>();
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -32,12 +34,12 @@ export class TopicsTableComponent {
   itemsPerPage = 5;
 
   get totalPages(): number {
-    return Math.ceil(this.topics.length / this.itemsPerPage);
+    return Math.ceil(this.notifications.length / this.itemsPerPage);
   }
 
-  get currentItems(): Topic[] {
+  get currentItems(): Notification[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.topics.slice(start, start + this.itemsPerPage);
+    return this.notifications.slice(start, start + this.itemsPerPage);
   }
 
   goToPage(page: number) {
@@ -47,8 +49,8 @@ export class TopicsTableComponent {
   }
 
   getBadgeColor(status: string): 'success' | 'warning' | 'error' {
-    if (status === 'Success') return 'success';
-    if (status === 'Pending') return 'warning';
+    if (status === 'sent') return 'success';
+    if (status === 'failed') return 'warning';
     return 'error';
   }
 }

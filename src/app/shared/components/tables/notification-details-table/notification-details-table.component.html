@@ -1,0 +1,71 @@
+<div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pb-3 pt-4 dark:border-white/[0.05] dark:bg-white/[0.03] sm:px-6">
+  <div class="flex justify-between gap-2 mb-4 sm:items-center">
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+        Users Received Notification 
+      </h3>
+    </div>
+  </div>
+
+  <div class="max-w-full overflow-x-auto">
+    <table class="w-full">
+      <thead class="border-gray-100 border-y dark:border-white/[0.05]">
+        <tr>
+          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+            NIP
+          </th>
+          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+            Name
+          </th>
+          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+            Department
+          </th>
+          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+            Platform
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-white/[0.05]">
+        @for (user of users; track $index) {
+        <tr>
+          <td class="py-3">
+            <div class="flex items-center gap-[18px]">
+              <div>
+                <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                  {{ user.nip }}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="py-3">
+            <div class="flex items-center w-full gap-5">
+              <div class="truncate">
+                <p class="mb-0.5 truncate text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                  {{ user.name }}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="py-3">
+            <div class="flex items-center w-full gap-5">
+              <div class="truncate">
+                <p class="mb-0.5 truncate text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                  {{ user.department }}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="py-3">
+            <app-badge
+              size="sm"
+              [color]="user.platform === 'android' ? 'success' : user.platform === 'Pending' ? 'warning' : 'error'"
+            >
+              {{ user.platform }}
+            </app-badge>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
 <div class="space-y-6">
   <div>
-    <app-component-card title="Form Edit Topic">
+    <app-component-card title="Form Subscribe Topic">
       @if (loading) {
         <div>Loading forms...</div>
       }
@@ -9,14 +9,24 @@
       @if (error) {
         <div>{{ error }}</div>
       }
-      
-      <!-- @if (!loading && topic) {
-        <app-edit-topic-form
-          [name]="topic.name"
-          [description]="topic.description"
-          (submitForm)="saveTopic($event)"
-        />
-      } -->
+
+      @if (!loading) {
+        <app-subscribe-topic-form
+          [topicId]="id"
+          [users]="users"
+          [selectedNips]="selectedUsers"    
+          (usersChange)="selectedUsers = $event"
+        >
+        </app-subscribe-topic-form>
+
+        <div class="flex items-center gap-5">
+          <app-button size="sm" variant="primary" 
+          [disabled]="loading"
+          (click)="saveUsers()"> 
+            Save 
+          </app-button>
+        </div>
+      }
     </app-component-card>
   </div>
 </div>

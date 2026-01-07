@@ -20,7 +20,6 @@ import { TopicService, TopicUser, TopicNotification, Topic } from '../../../../s
 export class TopicDetailsComponent implements OnInit {
   id!: number;
   users: TopicUser[] = [];
-  topics: Topic[] = [];
   topic!: Topic; 
   notifications: TopicNotification[] = [];
 
@@ -37,12 +36,6 @@ export class TopicDetailsComponent implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute, private router: Router, private topicService: TopicService) {}
-
-  // ngOnInit(): void {
-  //   this.id = Number(this.route.snapshot.paramMap.get('id'));
-  //   this.loadUsers();
-  //   this.loadNotifications();
-  // }
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));

@@ -1,0 +1,24 @@
+<div class="space-y-6">
+  <div>
+    <app-label for="name">Topic Name</app-label>
+    <app-input-field 
+      type="text"
+      id="name"
+      [value]="name"
+      (valueChange)="onNameChange($event)"
+      placeholder="Enter topic name"
+    />
+  </div>
+  <div>
+    <app-label for="description">Description</app-label>
+      <app-text-area-input
+        name="description"
+        [value]="description"
+        (valueChange)="onDescriptionChange($event)"
+        placeholder="Enter topic description"
+      />
+  </div>
+  <div class="flex items-center gap-5">
+    <app-button size="sm" variant="primary" (click)="onSubmit()"> Save </app-button>
+  </div>
+</div>

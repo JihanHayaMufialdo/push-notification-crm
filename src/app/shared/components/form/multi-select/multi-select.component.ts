@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 
 export interface Option {
   value: string;
@@ -14,7 +14,8 @@ export interface Option {
   templateUrl: './multi-select.component.html',
   styles: ``
 })
-export class MultiSelectComponent {
+
+export class MultiSelectComponent implements OnChanges{
 
   @Input() label: string = '';
   @Input() options: Option[] = [];
@@ -25,8 +26,10 @@ export class MultiSelectComponent {
   selectedOptions: string[] = [];
   isOpen = false;
 
-  ngOnInit() {
-    this.selectedOptions = [...this.defaultSelected];
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['defaultSelected']) {
+      this.selectedOptions = [...this.defaultSelected];
+    }
   }
 
   toggleDropdown() {
