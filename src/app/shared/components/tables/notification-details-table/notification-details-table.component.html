@@ -15,13 +15,10 @@
             NIP
           </th>
           <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-            Name
-          </th>
-          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-            Department
-          </th>
-          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
             Platform
+          </th>
+          <th scope="col" class="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+            Status
           </th>
         </tr>
       </thead>
@@ -41,16 +38,8 @@
             <div class="flex items-center w-full gap-5">
               <div class="truncate">
                 <p class="mb-0.5 truncate text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                  {{ user.name }}
-                </p>
-              </div>
-            </div>
-          </td>
-          <td class="py-3">
-            <div class="flex items-center w-full gap-5">
-              <div class="truncate">
-                <p class="mb-0.5 truncate text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                  {{ user.department }}
+                  {{ user.platforms.join(', ') }}
+
                 </p>
               </div>
             </div>
@@ -58,9 +47,9 @@
           <td class="py-3">
             <app-badge
               size="sm"
-              [color]="user.platform === 'android' ? 'success' : user.platform === 'Pending' ? 'warning' : 'error'"
+              [color]="user.status === 'sent' ? 'success' : user.status === 'failed' ? 'warning' : 'error'"
             >
-              {{ user.platform }}
+              {{ user.status }}
             </app-badge>
           </td>
         </tr>

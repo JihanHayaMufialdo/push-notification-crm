@@ -39,13 +39,19 @@ export class NotificationsComponent implements OnInit {
     this.loading = true;
     this.notificationService.getNotifications().subscribe({
       next: (res) => {
-        this.notifications = res.notifications.map(notif => ({
-          ...notif,
-          topic: notif.Topic?.name,
-          userCount: notif.Devices
-            ?.filter(dt => dt.User != null)
-            .length ?? 0
-        }));
+        this.notifications = res.notifications.map(notif => {
+          const uniqueNips = new Set(
+            notif.DeviceNotifications
+              ?.map(dn => dn?.Device?.nip ?? dn?.Device?.nip)
+              .filter(Boolean)
+          );
+  
+          return {
+            ...notif,
+            topic: notif.Topic?.name,
+            userCount: uniqueNips.size
+          };
+        });
         this.loading = false;
       },
       error: (err) => {

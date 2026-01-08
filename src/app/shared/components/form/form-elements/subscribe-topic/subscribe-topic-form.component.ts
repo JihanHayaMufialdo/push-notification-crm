@@ -11,7 +11,6 @@ interface MultiOption {
 
 interface User {
   nip: string;
-  name: string;
 }
 
 @Component({
@@ -59,7 +58,7 @@ export class SubscribeTopicFormComponent {
 
     this.multiOptions = this._users.map(user => ({
       value: user.nip,
-      text: user.name ?? user.name ?? user.nip,
+      text: user.nip,
       selected: this._selectedNips.includes(user.nip)
     }));
   }

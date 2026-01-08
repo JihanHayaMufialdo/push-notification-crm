@@ -50,9 +50,9 @@ export class SendUsersNotificationComponent implements OnInit {
     this.loading = true;
     this.error = '';
   
-    this.userService.getUsers().subscribe({
+    this.userService.getActiveUsers().subscribe({
       next: (res) => {
-        this.users = res.users;
+        this.users = res.devices;
         this.loading = false;
       },
       error: () => {
@@ -81,6 +81,7 @@ export class SendUsersNotificationComponent implements OnInit {
       next: () => {
         this.success = 'Notification sent successfully';
         this.loading = false;
+        this.router.navigate(['/notifications']);
       },
       error: () => {
         this.error = 'Failed to send notification';

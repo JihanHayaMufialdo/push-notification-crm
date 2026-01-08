@@ -81,6 +81,7 @@ export class SendTopicNotificationComponent implements OnInit {
       next: () => {
         this.success = 'Notification sent successfully';
         this.loading = false;
+        this.router.navigate(['/notifications']);
       },
       error: () => {
         this.error = 'Failed to send notification';

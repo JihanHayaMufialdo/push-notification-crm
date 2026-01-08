@@ -1,7 +1,6 @@
 <app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
 <div class="space-y-6">
   <div>
-    <app-component-card title="Topic Lists">
       @if (loading) {
         <div>Loading topics...</div>
       }
@@ -18,6 +17,5 @@
           (detailsClick)="openTopicDetails($event)"
         ></app-topics-table>
       }
-    </app-component-card>
   </div>
 </div>

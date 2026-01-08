@@ -20,21 +20,19 @@ export interface Notification {
     name: string;
   } | null;
 
-  Devices?: {
-    id: number;
-    platform?: string;
-    User?: {
+  DeviceNotifications?: {
+    status: string;
+    Device?: {
+      platform: string;
       nip: string;
-      name?: string;
     };
   }[];
 }
 
 export interface NotificationUser {
     nip: string;
-    name: string;
-    department: string;
-    platform: string;
+    status: string;
+    platforms: string[];
 }
 
 export interface SendToUsersPayload {
@@ -69,26 +67,39 @@ export class NotificationService {
     }
 
     getUsersByNotification(id: number): Observable<NotificationUser[]> {
-        return this.http
-        .get<{ users: any[] }>(
-            `${this.api}/admin/notification/${id}/users`
-        )
+      return this.http
+        .get<{ users: any[] }>(`${this.api}/admin/notification/${id}/users`)
         .pipe(
-            map(response =>
-              response.users.map(user => {
-                const device = user.Device;
-                const deviceUser = device?.User;
-      
-                return {
-                  nip: deviceUser?.nip ?? '—',
-                  name: deviceUser?.name ?? '-',
-                  department: deviceUser?.department ?? '-',
-                  platform: device?.platform ?? '-'
-                };
-              })
-            )
+          map(response => {
+            const userMap = new Map<string, NotificationUser>();
+    
+            response.users.forEach(user => {
+              const nip = user.Device?.nip;
+              const platform = user.Device?.platform;
+              const status = user.status;
+    
+              if (!nip) return;
+    
+              if (!userMap.has(nip)) {
+                userMap.set(nip, {
+                  nip,
+                  status,
+                  platforms: platform ? [platform] : []
+                });
+              } else if (platform) {
+                const item = userMap.get(nip)!;
+    
+                if (!item.platforms.includes(platform)) {
+                  item.platforms.push(platform);
+                }
+              }
+            });
+    
+            return Array.from(userMap.values());
+          })
         );
     }
+    
 
     sendToUsers(payload: SendToUsersPayload): Observable<any> {
       return this.http.post(

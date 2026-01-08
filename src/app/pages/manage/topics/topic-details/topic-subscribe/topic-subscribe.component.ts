@@ -54,9 +54,9 @@ export class TopicSubscribeComponent implements OnInit {
     this.loading = true;
     this.error = '';
   
-    this.userService.getUsers().subscribe({
+    this.userService.getActiveUsers().subscribe({
       next: (res) => {
-        this.users = res.users;
+        this.users = res.devices;
   
         this.topicService.getUsersByTopic(this.id).subscribe({
           next: (subscribedUsers) => {
@@ -116,8 +116,9 @@ export class TopicSubscribeComponent implements OnInit {
     forkJoin(requests).subscribe({
       next: () => {
         this.success = 'Users updated successfully';
-        this.previousSelectedUsers = [...this.selectedUsers]; // update snapshot
+        this.previousSelectedUsers = [...this.selectedUsers];
         this.loading = false;
+        this.router.navigate([`/topic/${this.id}/details`]);
       },
       error: (err) => {
         console.error(err);

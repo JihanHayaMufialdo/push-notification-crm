@@ -2,13 +2,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LabelComponent } from '../../label/label.component';
 import { InputFieldComponent } from '../../input/input-field.component';
-import { ComponentCardComponent } from '../../../common/component-card/component-card.component';
 import { MultiSelectComponent } from '../../multi-select/multi-select.component';
 import { FormsModule } from '@angular/forms';
 
 interface User {
   nip: string;
-  name: string;
 }
 
 interface MultiOption {
@@ -20,7 +18,6 @@ interface MultiOption {
 @Component({
   selector: 'app-send-users-notification-form',
   imports: [
-    ComponentCardComponent,
     LabelComponent,
     InputFieldComponent,
     FormsModule,
@@ -52,7 +49,7 @@ export class SendUsersNotificationFormComponent {
   private buildOptions() {
     this.multiOptions = this._users.map(user => ({
       value: user.nip,
-      text: user.name ?? user.nip,
+      text: user.nip,
       selected: false
     }));
   }

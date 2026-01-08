@@ -39,12 +39,18 @@ export class TopicsComponent implements OnInit {
     this.loading = true;
     this.topicService.getTopics().subscribe({
       next: (res) => {
-        this.topics = res.topics.map(topic => ({
-          ...topic,
-          userCount: topic.DeviceTopics
-            ?.filter(dt => dt.Device?.User != null)
-            .length ?? 0
-        }));
+        this.topics = res.topics.map(topic => {
+          const uniqueNips = new Set(
+            topic.DeviceTopics
+              ?.map(dt => dt?.Device?.User?.nip)
+              .filter(Boolean)
+          );
+  
+          return {
+            ...topic,
+            userCount: uniqueNips.size
+          };
+        });
         this.loading = false;
       },
       error: () => {
