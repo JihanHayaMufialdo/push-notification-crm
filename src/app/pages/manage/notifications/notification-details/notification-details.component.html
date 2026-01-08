@@ -1,7 +1,6 @@
 <app-page-breadcrumb [breadcrumbs]="breadcrumbs" />
 <div class="space-y-6">
   <div>
-    <app-component-card title="User Lists">
       @if (loading) {
         <div>Loading users...</div>
       }
@@ -16,6 +15,5 @@
           [notification]="notification"
         ></app-notification-details-table>
       }
-    </app-component-card>
   </div>
 </div>

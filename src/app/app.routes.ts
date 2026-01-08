@@ -41,67 +41,67 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         pathMatch: 'full',
         title:
-          'Angular Ecommerce Dashboard | TailAdmin - Angular Admin Dashboard Template',
+          'Push Notification | BPI Online',
       },
       {
         path:'notifications',
         component: NotificationsComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'notification/:id/details',
         component: NotificationDetailsComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'notification/send-users',
         component: SendUsersNotificationComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'notification/send-topic',
         component: SendTopicNotificationComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'topics',
         component:TopicsComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'users',
         component:UsersComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'topic/create',
         component:CreateTopicComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'topic/:id/details',
         component:TopicDetailsComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'topic/:id/edit',
         component:EditTopicComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'topic/:id/subscribe',
         component:TopicSubscribeComponent,
         canActivate: [AuthGuard],
-        title:'Angular Basic Tables Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        title:'Push Notification | BPI Online'
       },
       {
         path:'calendar',
