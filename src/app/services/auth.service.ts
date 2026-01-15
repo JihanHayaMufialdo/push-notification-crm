@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  exp: number;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,25 +19,38 @@ export class AuthService {
     return this.http.post<any>(`${this.api}/auth/signin`, credentials);
   }
 
-  logout(){
-    // return this.http.post(`${this.api}/auth/signout`, {});
-    return this.http.post(`${this.api}/auth/signout`, {}).subscribe({
-        next: () => {
-          localStorage.removeItem(this.tokenKey); 
-          this.router.navigate(['/signin']);      
-        },
-        error: () => {
-          localStorage.removeItem('access_token');
-          this.router.navigate(['/signin']);
-        }
-      });
-  }
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    this.router.navigate(['/signin']);
+  }  
+
+  // logout(){
+  //   // return this.http.post(`${this.api}/auth/signout`, {});
+  //   return this.http.post(`${this.api}/auth/signout`, {}).subscribe({
+  //       next: () => {
+  //         localStorage.removeItem(this.tokenKey); 
+  //         this.router.navigate(['/signin']);      
+  //       },
+  //       error: () => {
+  //         localStorage.removeItem(this.tokenKey);
+  //         this.router.navigate(['/signin']);
+  //       }
+  //     });
+  // }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) return false;
+  
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      return decoded.exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
   }
 }

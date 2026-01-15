@@ -1,14 +1,27 @@
-// auth.interceptor.ts
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
-  const token = localStorage.getItem('access_token'); // get the JWT
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+  const token = localStorage.getItem('access_token');
+
+  let authReq = req;
 
   if (token) {
-    req = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` } // attach Bearer token
+    authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
   }
 
-  return next(req);
+  return next(authReq).pipe(
+    catchError(err => {
+      if (err.status === 401 && router.url !== '/signin') {
+        localStorage.removeItem('access_token');
+        router.navigate(['/signin']);
+      }
+      return throwError(() => err);
+    })
+  );
 };
