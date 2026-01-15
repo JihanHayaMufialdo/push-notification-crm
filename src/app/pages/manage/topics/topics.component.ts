@@ -42,7 +42,7 @@ export class TopicsComponent implements OnInit {
         this.topics = res.topics.map(topic => {
           const uniqueNips = new Set(
             topic.DeviceTopics
-              ?.map(dt => dt?.Device?.User?.nip)
+              ?.map(dt => dt?.Device?.nip)
               .filter(Boolean)
           );
   

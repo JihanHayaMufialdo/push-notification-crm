@@ -20,18 +20,13 @@ export interface Topic {
       Device?: {
         id: number;
         platform?: string;
-        User?: {
-          nip: string;
-          name?: string;
-        };
+        nip: string;
       };
     }[];
 }
 
 export interface TopicUser {
     nip: string;
-    name: string;
-    department: string;
     platform: string;
 }
 
@@ -72,12 +67,9 @@ export class TopicService {
             map(response =>
               response.users.map(user => {
                 const device = user.Device;
-                const deviceUser = device?.User;
       
                 return {
-                  nip: deviceUser?.nip ?? '—',
-                  name: deviceUser?.name ?? '-',
-                  department: deviceUser?.department ?? '-',
+                  nip: device?.nip ?? '—',
                   platform: device?.platform ?? '-'
                 };
               })
