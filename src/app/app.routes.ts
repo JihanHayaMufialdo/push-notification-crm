@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { EcommerceComponent } from './pages/dashboard/ecommerce/ecommerce.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NotificationsComponent } from './pages/manage/notifications/notifications.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
@@ -22,7 +22,7 @@ export const routes: Routes = [
     children:[
       {
         path: '',
-        component: EcommerceComponent,
+        component: DashboardComponent,
         canActivate: [AuthGuard],
         pathMatch: 'full',
         title:

@@ -29,10 +29,20 @@ export interface Notification {
   }[];
 }
 
+export interface PaginatedNotification {
+  notifications: Notification[];
+  pagination: {
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+  };
+}
+
 export interface NotificationUser {
-    nip: string;
-    status: string;
-    platforms: string[];
+  nip: string;
+  status: string;
+  platforms: string[];
 }
 
 export interface SendToUsersPayload {
@@ -49,6 +59,13 @@ export interface SendToTopicPayload {
   link: string;
 }
 
+export interface MonthlyCount {
+  year: number;
+  data: {
+    [month: number]: number;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,17 +75,28 @@ export class NotificationService {
 
     constructor(private http: HttpClient) {}
 
-    getNotifications(): Observable<{ notifications: Notification[] }> {
-        return this.http.get<{ notifications: Notification[] }>(`${this.api}/admin/notifications`);
+    getNotifications(page = 1, limit = 10) {
+        return this.http.get<PaginatedNotification>(
+          `${this.api}/admin/notifications`, {
+            params: {
+              page,
+              limit
+            }
+          }
+        );
     }
 
     getNotificationById(id: number) {
-        return this.http.get<{ notification: Notification }>(`${this.api}/admin/notification/${id}`);
+        return this.http.get<{ notification: Notification }>(
+          `${this.api}/admin/notification/${id}`
+        );
     }
 
     getUsersByNotification(id: number): Observable<NotificationUser[]> {
       return this.http
-        .get<{ users: any[] }>(`${this.api}/admin/notification/${id}/users`)
+        .get<{ users: any[] }>(
+          `${this.api}/admin/notification/${id}/users`
+        )
         .pipe(
           map(response => {
             const userMap = new Map<string, NotificationUser>();
@@ -100,7 +128,6 @@ export class NotificationService {
         );
     }
     
-
     sendToUsers(payload: SendToUsersPayload): Observable<any> {
       return this.http.post(
         `${this.api}/admin/notification/send-users`,
@@ -112,6 +139,24 @@ export class NotificationService {
       return this.http.post(
         `${this.api}/admin/notification/send-topic`,
         payload
+      );
+    }
+
+    countSendToUsers() {
+      return this.http.get<{ count: number }>(
+        `${this.api}/admin/notifications/count-users`
+      );
+    }
+    
+    countSendToTopic() {
+      return this.http.get<{ count: number }>(
+        `${this.api}/admin/notifications/count-topic`
+      );
+    }
+
+    countPerMonth(): Observable<MonthlyCount> {
+      return this.http.get<MonthlyCount>(
+        `${this.api}/admin/notifications/count-month`
       );
     }
 }

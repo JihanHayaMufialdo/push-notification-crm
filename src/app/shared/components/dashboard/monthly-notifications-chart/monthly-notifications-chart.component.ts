@@ -1,32 +1,35 @@
 
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgApexchartsModule, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexPlotOptions, ApexDataLabels, ApexStroke, ApexLegend, ApexYAxis, ApexGrid, ApexFill, ApexTooltip } from 'ng-apexcharts';
-import { DropdownComponent } from '../../ui/dropdown/dropdown.component';
-import { DropdownItemComponent } from '../../ui/dropdown/dropdown-item/dropdown-item.component';
+import { MonthlyCount } from '../../../../services/notifications.service';
 
 @Component({
-  selector: 'app-monthly-sales-chart',
+  selector: 'app-monthly-notifications-chart',
   standalone: true,
   imports: [
     NgApexchartsModule,
-    DropdownComponent,
-    DropdownItemComponent
 ],
-  templateUrl: './monthly-sales-chart.component.html'
+  templateUrl: './monthly-notifications-chart.component.html'
 })
-export class MonthlySalesChartComponent {
+
+export class MonthlyNotificationsChartComponent implements OnChanges {
+
+  @Input() monthCount!: MonthlyCount;
+
   public series: ApexAxisChartSeries = [
     {
-      name: 'Sales',
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: 'Notification',
+      data: [],
     },
   ];
+
   public chart: ApexChart = {
     fontFamily: 'Outfit, sans-serif',
     type: 'bar',
     height: 180,
     toolbar: { show: false },
   };
+
   public xaxis: ApexXAxis = {
     categories: [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -35,6 +38,7 @@ export class MonthlySalesChartComponent {
     axisBorder: { show: false },
     axisTicks: { show: false },
   };
+
   public plotOptions: ApexPlotOptions = {
     bar: {
       horizontal: false,
@@ -43,6 +47,7 @@ export class MonthlySalesChartComponent {
       borderRadiusApplication: 'end',
     },
   };
+
   public dataLabels: ApexDataLabels = { enabled: false };
   public stroke: ApexStroke = {
     show: true,
@@ -64,13 +69,19 @@ export class MonthlySalesChartComponent {
   };
   public colors: string[] = ['#465fff'];
 
-  isOpen = false;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['monthCount'] && this.monthCount?.data) {
+      const monthlyData = Array.from({ length: 12 }, (_, index) =>
+        this.monthCount.data[index + 1] ?? 0
+      );
 
-  toggleDropdown() {
-    this.isOpen = !this.isOpen;
-  }
-
-  closeDropdown() {
-    this.isOpen = false;
+      this.series = [
+        {
+          ...this.series[0],
+          name: `Sales ${this.monthCount.year}`,
+          data: monthlyData,
+        },
+      ];
+    }
   }
 }

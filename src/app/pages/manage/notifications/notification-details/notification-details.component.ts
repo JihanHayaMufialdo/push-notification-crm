@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ComponentCardComponent } from '../../../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { NotificationDetailsTableComponent } from '../../../../shared/components/tables/notification-details-table/notification-details-table.component';
 import { NotificationService, Notification, NotificationUser } from '../../../../services/notifications.service';
@@ -8,7 +7,6 @@ import { NotificationService, Notification, NotificationUser } from '../../../..
 @Component({
   selector: 'app-notification-details',
   imports: [
-    ComponentCardComponent,
     PageBreadcrumbComponent,
     NotificationDetailsTableComponent,
   ],

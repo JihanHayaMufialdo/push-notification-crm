@@ -1,0 +1,54 @@
+<div class="grid grid-cols-12 gap-4 md:gap-6">
+  <div class="col-span-12 space-y-6 xl:col-span-7">
+    <div>
+      @if (loading) {
+        <div>Loading metrics...</div>
+      }
+    
+      @if (error) {
+        <div class="error">{{ error }}</div>
+      }
+    
+      @if (!loading && !error) {
+        <app-notification-metrics
+          [usersCount]="usersCount"
+          [topicCount]="topicCount"
+        />
+      }
+    </div>
+
+    <div>
+      @if (loading) {
+        <div>Loading metrics...</div>
+      }
+    
+      @if (error) {
+        <div class="error">{{ error }}</div>
+      }
+    
+      @if (!loading && !error) {
+        <app-monthly-notifications-chart
+          [monthCount]="monthCount"
+        />
+      }
+    </div>
+  </div>
+
+  <div class="col-span-12 xl:col-span-7">
+    @if (loading) {
+      <div>Loading metrics...</div>
+    }
+  
+    @if (error) {
+      <div class="error">{{ error }}</div>
+    }
+  
+    @if (!loading && !error) {
+      <app-recent-notifications
+        [notifications]="displayedNotifications"
+        [showAll]="showAll"
+        (toggleShowAllEvent)="toggleShowAll()"
+      />
+    }
+  </div>
+</div>

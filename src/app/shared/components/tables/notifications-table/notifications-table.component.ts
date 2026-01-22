@@ -20,32 +20,23 @@ import { Notification } from '../../../../services/notifications.service';
 export class NotificationsTableComponent {
 
   @Input() notifications: Notification[] = [];
+  @Input() currentPage = 1;
+  @Input() totalPages = 1;
 
   @Output() detailsClick = new EventEmitter<Notification>();
   @Output() sendToUsers = new EventEmitter<void>();
   @Output() sendToTopic = new EventEmitter<void>();
+  @Output() pageChange = new EventEmitter<number>();
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.pageChange.emit(page);
+    }
+  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleString();
-  }
-
-  currentPage = 1;
-  itemsPerPage = 5;
-
-  get totalPages(): number {
-    return Math.ceil(this.notifications.length / this.itemsPerPage);
-  }
-
-  get currentItems(): Notification[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.notifications.slice(start, start + this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
   }
 
   getBadgeColor(status: string): 'success' | 'warning' | 'error' {

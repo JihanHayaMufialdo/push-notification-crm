@@ -11,6 +11,9 @@
       @if (!loading && !error) {
         <app-notifications-table
         [notifications]="notifications"
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
         (detailsClick)="openDetails($event)"
         (sendToUsers)="sendNotificationToUsers()"
         (sendToTopic)="sendNotificationToTopic()"

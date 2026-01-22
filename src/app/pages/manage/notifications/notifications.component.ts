@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ComponentCardComponent } from '../../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { NotificationsTableComponent } from '../../../shared/components/tables/notifications-table/notifications-table.component';
 import { NotificationService, NotificationUser, Notification } from '../../../services/notifications.service';
@@ -8,7 +7,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-basic-tables',
   imports: [
-    ComponentCardComponent,
     PageBreadcrumbComponent,
     NotificationsTableComponent
   ],
@@ -20,6 +18,10 @@ export class NotificationsComponent implements OnInit {
 
   notifications: Notification[] = [];
   users: NotificationUser[] = [];
+
+  currentPage = 1;
+  totalPages = 1;
+  itemsPerPage = 10;
 
   loading = true;
   error = '';
@@ -35,9 +37,9 @@ export class NotificationsComponent implements OnInit {
     this.loadNotifications();
   }
 
-  loadNotifications() {
+  loadNotifications(page = 1) {
     this.loading = true;
-    this.notificationService.getNotifications().subscribe({
+    this.notificationService.getNotifications(page).subscribe({
       next: (res) => {
         this.notifications = res.notifications.map(notif => {
           const uniqueNips = new Set(
@@ -52,6 +54,8 @@ export class NotificationsComponent implements OnInit {
             userCount: uniqueNips.size
           };
         });
+        this.currentPage = res.pagination.currentPage;
+        this.totalPages = res.pagination.totalPages;
         this.loading = false;
       },
       error: (err) => {
@@ -60,6 +64,10 @@ export class NotificationsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onPageChange(page: number) {
+    this.loadNotifications(page);
   }
 
   openDetails(notif: Notification) {
